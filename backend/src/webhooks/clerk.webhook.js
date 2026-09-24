@@ -1,5 +1,5 @@
 import express from "express";
-import user from "../models/user.model.js"
+import User from "../models/user.model.js"
 import { verifyWebhook }  from "@clerk/backend/webhooks";
 
 
@@ -39,12 +39,12 @@ router.post("/" , async (req , res)=>{
         [u.first_name, u.last_name].filter(Boolean).join(" ") || u.username || email?.split("@")[0];
 
 
-        await user.findOneandUpdate({clerkId:u.id}, { clerkId: u.id, email, fullName, profilePic: u.image_url },
+        await User.findOneAndUpdate({clerkId:u.id}, { clerkId: u.id, email, fullName, profilePic: u.image_url },
         { new: true, upsert: true, setDefaultsOnInsert: true })
     }
 
     if(evt.type === "user.deleted"){
-        if(evt.data.id) await user.findOneAndDelete({clerkId:evt.data.id  })
+        if(evt.data.id) await User.findOneAndDelete({clerkId:evt.data.id  })
     }
 
     res.status(200).json({ received: true});
