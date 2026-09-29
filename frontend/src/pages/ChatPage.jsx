@@ -43,7 +43,7 @@ function ChatPage() {
             !isLargeScreen && !activeConversationId ? "hidden lg:flex" : "flex"
           }`}
         >
-          <ChatHeader />
+          <ChatHeader  />
           <MessageList />
 
           {activeConversation ? <ChatComposer /> : null}
