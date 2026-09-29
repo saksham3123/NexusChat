@@ -1,4 +1,3 @@
-import React from 'react'
 
 import {AuthHeader} from '../components/auth/AuthHeader'
 import  {AuthHeroPanel} from '../components/auth/AuthHeroPanel'

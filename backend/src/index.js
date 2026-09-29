@@ -28,8 +28,14 @@ const publicDir = path.join(process.cwd(), "public");
 app.use("/api/webhooks/clerk",express.raw({type:"application/json"}), clerkWebhook);
 
 
+const allowedOrigins = [
+  FRONTEND_URL,
+  "http://localhost:5173",
+  "http://127.0.0.1:5173",
+].filter(Boolean);
+
 app.use(express.json())
-app.use(cors({origin:FRONTEND_URL, credentials:true}));  
+app.use(cors({origin: allowedOrigins, credentials:true}));  
 
 app.use(clerkMiddleware())
 

@@ -1,4 +1,3 @@
-import React from 'react'
 import {WallpaperPicker} from '../WallpaperPicker.jsx'
 import {ThemePresetPicker} from '../ThemePresetPicker.jsx'
 import {ThemeToggle} from '../ThemeToggle.jsx'

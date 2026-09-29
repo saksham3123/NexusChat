@@ -1,6 +1,7 @@
 import User from "../models/user.model.js"
 import Message from "../models/message.model.js"
-import { getReceiverSocketId } from "../lib/socket.js"
+import { getReceiverSocketId, io } from "../lib/socket.js"
+import { uploadChatMedia, hasImageKitConfig } from "../lib/imagekit.js"
 
 export async function getUsersForSidebar(req, res){
 
@@ -71,7 +72,7 @@ export async function getMessages(req , res) {
         const myId = req.user._id; 
         const messages =  await Message.find({
             $or:[
-                {senderId: myID  , receiverId: userToChatId},
+                {senderId: myId  , receiverId: userToChatId},
                 {senderId: userToChatId , receiverId: myId}
 
             ]

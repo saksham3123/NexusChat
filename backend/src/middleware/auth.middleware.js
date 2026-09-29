@@ -1,4 +1,4 @@
-import { getAuth } from "@clerk/express";
+import { getAuth, clerkClient } from "@clerk/express";
 import User from "../models/user.model.js";
 
 export async function protectRoute(req , res , next) {
@@ -10,10 +10,26 @@ export async function protectRoute(req , res , next) {
          return;
         }
 
-        const user = await User.findOne({clerkId: userId})
+        let user = await User.findOne({clerkId: userId})
 
         if(!user){
-            res.status(404).json({meessage: "User profile is not synced yet"});
+            try {
+                const clerkUser = await clerkClient.users.getUser(userId);
+                const email = clerkUser.emailAddresses?.find((e) => e.id === clerkUser.primaryEmailAddressId)?.emailAddress || clerkUser.emailAddresses?.[0]?.emailAddress || "";
+                const fullName = [clerkUser.firstName, clerkUser.lastName].filter(Boolean).join(" ") || clerkUser.username || email?.split("@")[0] || "User";
+                user = await User.create({
+                    clerkId: userId,
+                    email,
+                    fullName,
+                    profilePic: clerkUser.imageUrl || "",
+                });
+            } catch (syncError) {
+                console.error("Failed to auto-sync Clerk user:", syncError.message);
+            }
+        }
+
+        if(!user){
+            res.status(404).json({message: "User profile is not synced yet"});
             return;
         }
 
