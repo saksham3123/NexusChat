@@ -40,8 +40,8 @@ app.get("/health" , (req , res)=>{
 })
 
 
-app.use("./api/auth", authRoutes)
-app.use("./api/messages", messageRoutes)
+app.use("/api/auth", authRoutes)
+app.use("/api/messages", messageRoutes)
 
 
 

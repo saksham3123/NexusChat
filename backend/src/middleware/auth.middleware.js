@@ -10,14 +10,14 @@ export async function protectRoute(req , res , next) {
          return;
         }
 
-        const user = await User.findOne({clerkId: userID})
+        const user = await User.findOne({clerkId: userId})
 
         if(!user){
             res.status(404).json({meessage: "User profile is not synced yet"});
             return;
         }
 
-        req.user = next;
+        req.user = user;
 
         next();
 
